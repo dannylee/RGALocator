@@ -54,7 +54,7 @@ namespace VirtualReceptionist
 
             client = new WebClient();
             client.OpenReadCompleted += OnEmployeeServiceOpenReadComplete;
-            client.OpenReadAsync(new Uri("http://locator.rgahosting.com/LocatorService.svc/employees/"));
+            client.OpenReadAsync(new Uri("http://locator.rgahosting.com/LocatorService.svc/employees/?date=" + DateTime.Now.ToString()));
         }
 
         private void OnEmployeeServiceOpenReadComplete(object sender, OpenReadCompletedEventArgs e)

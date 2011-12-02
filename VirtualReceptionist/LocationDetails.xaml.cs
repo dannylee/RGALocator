@@ -77,14 +77,15 @@ namespace VirtualReceptionist
                 return;
             }
             locationId = this.NavigationContext.QueryString["locationId"];
-            locationClient = new WebClient();
-            locationClient.OpenReadCompleted += OnEmployeeServiceOpenReadComplete;
-            locationClient.OpenReadAsync(new Uri("http://locator.rgahosting.com/LocatorService.svc/employees/?location=" + locationId));
+            loadEmployees();
+            
         }
 
         private void loadEmployees()
         {
-            
+            locationClient = new WebClient();
+            locationClient.OpenReadCompleted += OnEmployeeServiceOpenReadComplete;
+            locationClient.OpenReadAsync(new Uri("http://locator.rgahosting.com/LocatorService.svc/employees/?location=" + locationId + "&date=" + DateTime.Now.ToString()));
         }
 
         private void OnEmployeeServiceOpenReadComplete(object sender, OpenReadCompletedEventArgs e)
@@ -118,7 +119,7 @@ namespace VirtualReceptionist
         {
             if (this.lstColleagues.SelectedIndex != -1)
             {
-                this.NavigationService.Navigate(new Uri("/ColleagueDetails.xaml?colleagueId=" + this.lstColleagues.SelectedValue + "&locationId=" + locationId, UriKind.Relative));
+                this.NavigationService.Navigate(new Uri("/ColleagueDetails.xaml?colleagueId=" + this.lstColleagues.SelectedValue + "&locationId=" + locationId + "&date=" + DateTime.Now.ToString(), UriKind.Relative));
             }
         }
         public void btnBack_OnClick(object sender, EventArgs e)
@@ -136,7 +137,8 @@ namespace VirtualReceptionist
         {
             locationClient = new WebClient();
             locationClient.OpenReadCompleted += OnCheckInServiceOpenReadComplete;
-            locationClient.OpenReadAsync(new Uri("http://locator.rgahosting.com/LocatorService.svc/employees/" + this.savedUserName.Value + "?location=" + locationId));
+            var url = "http://locator.rgahosting.com/LocatorService.svc/employees/" + this.savedUserName.Value + "?location=" + locationId + "&date=" + DateTime.Now.ToString();
+            locationClient.OpenReadAsync(new Uri(url));
         }
 
         private void OnCheckInServiceOpenReadComplete(object sender, OpenReadCompletedEventArgs e)
@@ -149,6 +151,7 @@ namespace VirtualReceptionist
             var success = Boolean.Parse(xml.Root.Value);
             if (success)
             {
+                loadEmployees();
                 MessageBox.Show("You have checked in to " + locationName);
             }
 
