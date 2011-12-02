@@ -1,0 +1,53 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="VirtualReceptionist.LocationDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock x:Name="ApplicationTitle" Text="LOCATION - R/GA VIRTUAL RECEPTIONIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="location" Margin="18 10 0 15" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1">
+            <TextBlock x:Name="txtIntro" Text="Loading location..." Padding="10 10 0 0"/>
+            <ListBox x:Name="lstColleagues" ItemsSource="{Binding}" SelectedValuePath="ColleagueID"
+                     SelectionChanged="lstColleagues_SelectionChanged" Padding="0 15 0 0"
+                     Height="640">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="txtFirstName" Text="{Binding FirstName}" Padding="10 0 0 0" FontSize="40"/>
+                                <TextBlock x:Name="txtLastName" Text="{Binding LastName}" Padding="10 0 0 0" FontSize="40"/>
+                            </StackPanel>
+                            <TextBlock x:Name="txtTitle" Text="{Binding Title}" Padding="10 0 0 10"/>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+        </StackPanel>
+    </Grid>
+ 
+
+
+</phone:PhoneApplicationPage>

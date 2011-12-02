@@ -1,0 +1,129 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="VirtualReceptionist.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,0">
+            <TextBlock x:Name="ApplicationTitle" Text="HOME - R/GA VIRTUAL RECEPTIONIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <controls:Pivot x:Name="Pivot" Grid.Row="1">
+            <controls:PivotItem x:Name="pvtColleagues" Header="colleagues"  Margin="0" Padding="0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="txtColleaguesLoading" Text="Loading colleagues..." Padding="10 10 0 0 " Grid.Row="1"/>
+                    <ListBox x:Name="lstColleagues" ItemsSource="{Binding}" SelectedValuePath="ColleagueID"
+                            SelectionChanged="lstColleagues_SelectionChanged" Padding="0 15 0 0"
+                            Height="560">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Name="txtFirstName" Text="{Binding FirstName}" Padding="10 10 0 0" FontSize="40"/>
+                                        <TextBlock x:Name="txtLastName" Text="{Binding LastName}" Padding="10 10 0 0" FontSize="40"/>
+                                    </StackPanel>
+                                    <TextBlock x:Name="txtTitle" Text="{Binding Title}" Padding="10 0"/>
+                                </StackPanel>
+                                    
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                            
+                    </ListBox>
+                        
+                </StackPanel>
+
+            </controls:PivotItem>
+            <controls:PivotItem x:Name="pvtLocations" Header="locations" Margin="0" Padding="0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="txtLocationsLoading" Text="Loading locations..." Padding="10 20" Grid.Row="1"/>
+                    <ListBox x:Name="lstLocations" ItemsSource="{Binding}" SelectedValuePath="LocationID"
+                             SelectionChanged="lstLocations_SelectionChanged" Padding="0 15 0 0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock x:Name="txtLocation" Text="{Binding Name}" Padding="10 10 0 0" FontSize="40"/>
+                                    <TextBlock x:Name="txtAddress" Text="{Binding Address}" Padding="10 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                            
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+            </controls:PivotItem>
+        </controls:Pivot>
+        <!--
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock Text="Where's my colleague?"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       Padding="0 0 0 200"
+                       FontSize="32"
+                       ManipulationStarted="OnColleaguesManipulationStarted"/>
+            <TextBlock Text="Test"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Padding="0 0 0 0"
+                       FontSize="32"
+                       ManipulationStarted="OnTestManipulationStarted"/>
+            <TextBlock Text="Who's in what location?"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Padding="0 200 0 0"
+                       FontSize="32"
+                       ManipulationStarted="OnLocationsManipulationStarted"/>
+        </Grid>
+        -->
+    </Grid>
+ 
+    
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="Settings" x:Name="btnSettings" Click="btnSettings_OnClick"/>
+
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>
