@@ -119,6 +119,8 @@
     <Resource Include="ApplicationIcon.png" />
     <Resource Include="Background.png" />
     <Content Include="Images\appbar.check.rest.png" />
+    <Content Include="Images\appbar.checkin.rest.png" />
+    <Content Include="Images\appbar.checkout.rest.png" />
     <Content Include="Images\appbar.close.rest.png" />
     <Content Include="Images\appbar.feature.settings.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />

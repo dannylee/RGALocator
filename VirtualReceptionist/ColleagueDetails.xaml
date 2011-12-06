@@ -35,15 +35,29 @@
                 <TextBlock x:Name="txtFirstName" Text="{Binding FirstName}" Padding="10 10 0 0" FontSize="40"/>
                 <TextBlock x:Name="txtLastName" Text="{Binding LastName}" Padding="10 10 0 0" FontSize="40"/>
             </StackPanel>
-            <Image Height="128" Width="128" HorizontalAlignment="Left" Margin="10 20" Source="{Binding PhotoURL}"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Job Title:" Padding="10" Width="170"/>
-                <TextBlock Text="{Binding Title}" Padding="10"/>
+            <Canvas x:Name="cnvThumbnail" Height="128" Width="470" Margin="10 20">
+                <Image x:Name="imgThumbnail" Height="128" Width="128"  HorizontalAlignment="Left" Source="{Binding PhotoURL}" Canvas.Left="470"/>
+            </Canvas>
+            
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="job title" Padding="10 10 10 0" FontSize="30"/>
+                <TextBlock Text="{Binding Title}" Padding="10 0"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Current Location:" Padding="10 0" Width="170"/>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="current location" Padding="10 10 10 0" FontSize="30"/>
                 <TextBlock Text="{Binding CurrentLocation}" Padding="10 0"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="240">
+                    <TextBlock Text="call mobile" Padding="10 10 10 0" FontSize="30"/>
+                    <TextBlock Text="{Binding MobilePhone}" Padding="10 0" MouseLeftButtonUp="txtMobilePhone_MouseLeftButtonUp" Foreground="{StaticResource PhoneAccentBrush}"  x:Name="txtMobilePhone"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="240">
+                    <TextBlock Text="page mobile" Padding="10 10 10 0" FontSize="30"/>
+                    <TextBlock Text="sms" Padding="10 0" MouseLeftButtonUp="txtPage_MouseLeftButtonUp" Foreground="{StaticResource PhoneAccentBrush}"  x:Name="txtPage"/>
+                </StackPanel>
+            </StackPanel>
+                
         </StackPanel>
 
     </Grid>
@@ -53,6 +67,7 @@
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.back.rest.png" Text="Back" Click="btnBack_OnClick"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="Settings" x:Name="btnSettings" Click="btnSettings_OnClick"/>
+            
             <!--
             <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
             <shell:ApplicationBar.MenuItems>
@@ -84,4 +99,11 @@
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
     -->
+    
+    <phone:PhoneApplicationPage.Resources>
+        <Storyboard x:Name="ThumbnailStoryboard" Storyboard.TargetName="imgThumbnail"
+                    Storyboard.TargetProperty="(Canvas.Left)">
+            <DoubleAnimation To="0" Duration="0:0:.3" AutoReverse="False"/>
+        </Storyboard>
+    </phone:PhoneApplicationPage.Resources>
 </phone:PhoneApplicationPage>

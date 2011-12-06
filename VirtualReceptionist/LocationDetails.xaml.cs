@@ -19,6 +19,7 @@ using VirtualReceptionist.BusinessObjects;
 
 namespace VirtualReceptionist
 {
+    
     public partial class LocationDetails : PhoneApplicationPage
     {
         private WebClient locationClient;
@@ -27,12 +28,25 @@ namespace VirtualReceptionist
 
         private string locationName = "";
 
+        private string outOfOfficeLocationId = "bca88939-68dc-467d-a354-d733c9a5cce2";
+
         Setting<string> savedUserName = new Setting<string>("UserName", "");
+
+        Setting<Boolean> savedClockedIn = new Setting<Boolean>("ClockedIn", false);
+
+        Setting<string> savedUserLocationId = new Setting<string>("UserLocationId", "");
 
         public LocationDetails()
         {
             InitializeComponent();
 
+            
+
+            this.Loaded += LocationDetails_Loaded;
+        }
+
+        private void setUpApplicationBar()
+        {
             ApplicationBar = new ApplicationBar();
             ApplicationBar.Mode = ApplicationBarMode.Default;
             ApplicationBar.Opacity = 1.0;
@@ -53,20 +67,39 @@ namespace VirtualReceptionist
             };
             settingsButton.Click += btnSettings_OnClick;
             ApplicationBar.Buttons.Add(settingsButton);
-
+            
             if (!string.IsNullOrEmpty(this.savedUserName.Value))
             {
-                var checkInButton = new ApplicationBarIconButton
+
+                if (locationId != outOfOfficeLocationId)
                 {
-                    IconUri = new Uri("/Images/appbar.upload.rest.png", UriKind.Relative),
-                    Text = "Check In"
-                };
-                checkInButton.Click += btnCheckIn_OnClick;
-                ApplicationBar.Buttons.Add(checkInButton);
+                    if (this.savedUserLocationId.Value == locationId)
+                    {
+                        var checkOutButton = new ApplicationBarIconButton
+                        {
+                            IconUri = new Uri("/Images/appbar.checkout.rest.png", UriKind.Relative),
+                            Text = "Check Out"
+                        };
+                        checkOutButton.Click += btnCheckOut_OnClick;
+                        ApplicationBar.Buttons.Add(checkOutButton);
+                    }
+                    else
+                    {
+                        var checkInButton = new ApplicationBarIconButton
+                        {
+                            IconUri = new Uri("/Images/appbar.checkin.rest.png", UriKind.Relative),
+                            Text = "Check In"
+                        };
+                        checkInButton.Click += btnCheckIn_OnClick;
+                        ApplicationBar.Buttons.Add(checkInButton);
+                    }
+                }
+                    
+                 
 
             }
 
-            this.Loaded += LocationDetails_Loaded;
+                
         }
 
         private void LocationDetails_Loaded(object sender, RoutedEventArgs e)
@@ -77,6 +110,7 @@ namespace VirtualReceptionist
                 return;
             }
             locationId = this.NavigationContext.QueryString["locationId"];
+            this.setUpApplicationBar();
             loadEmployees();
             
         }
@@ -112,6 +146,7 @@ namespace VirtualReceptionist
                 locationName = xColleague.Element("currentlocation").Value;
             }
             this.txtIntro.Text = string.Format("Colleagues at {0}:",locationName);
+            
 
         }
 
@@ -143,17 +178,61 @@ namespace VirtualReceptionist
 
         private void OnCheckInServiceOpenReadComplete(object sender, OpenReadCompletedEventArgs e)
         {
-            var reader = new StreamReader(e.Result);
-            var result = reader.ReadToEnd();
-            XmlReader XMLReader = XmlReader.Create(new MemoryStream(System.Text.UnicodeEncoding.Unicode.GetBytes(result)));
-            XDocument xml = XDocument.Load(XMLReader);
-
-            var success = Boolean.Parse(xml.Root.Value);
-            if (success)
+            if (e.Error != null)
             {
-                loadEmployees();
-                MessageBox.Show("You have checked in to " + locationName);
+                MessageBox.Show("There was a problem checking you in - please check your username in settings");
             }
+            else
+            {
+                var reader = new StreamReader(e.Result);
+                var result = reader.ReadToEnd();
+                XmlReader XMLReader = XmlReader.Create(new MemoryStream(System.Text.UnicodeEncoding.Unicode.GetBytes(result)));
+                XDocument xml = XDocument.Load(XMLReader);
+
+                var success = Boolean.Parse(xml.Root.Value);
+                if (success)
+                {
+                    this.savedUserLocationId.Value = locationId;
+                    loadEmployees();
+                    this.setUpApplicationBar();
+                    MessageBox.Show("You have checked in to " + locationName);
+                }
+            }
+                
+
+        }
+
+        public void btnCheckOut_OnClick(object sender, EventArgs e)
+        {
+            locationClient = new WebClient();
+            locationClient.OpenReadCompleted += OnCheckOutServiceOpenReadComplete;
+            var url = "http://locator.rgahosting.com/LocatorService.svc/employees/" + this.savedUserName.Value + "?location=" + outOfOfficeLocationId + "&date=" + DateTime.Now.ToString();
+            locationClient.OpenReadAsync(new Uri(url));
+        }
+
+        private void OnCheckOutServiceOpenReadComplete(object sender, OpenReadCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                MessageBox.Show("There was a problem checking you out - please check your username in settings");
+            }
+            else
+            {
+                var reader = new StreamReader(e.Result);
+                var result = reader.ReadToEnd();
+                XmlReader XMLReader = XmlReader.Create(new MemoryStream(System.Text.UnicodeEncoding.Unicode.GetBytes(result)));
+                XDocument xml = XDocument.Load(XMLReader);
+
+                var success = Boolean.Parse(xml.Root.Value);
+                if (success)
+                {
+                    this.savedUserLocationId.Value = outOfOfficeLocationId;
+                    loadEmployees();
+                    this.setUpApplicationBar();
+                    MessageBox.Show("You have been checked out.");
+                }
+            }
+
 
         }
 

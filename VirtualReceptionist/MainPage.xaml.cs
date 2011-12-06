@@ -27,11 +27,38 @@ namespace VirtualReceptionist
 
         Setting<string> savedUserName = new Setting<string>("UserName", "");
 
+        Setting<string> savedUserDisplayName = new Setting<string>("UserDisplayName", "");
+
+        Setting<string> savedUserLocation = new Setting<string>("UserLocation", "");
+
+        Setting<string> savedUserLocationId = new Setting<string>("UserLocationId", "");
+
+        private Setting<Boolean> savedClockedIn = new Setting<Boolean>("ClockedIn", false);
+
         // Constructor
         public MainPage()
         {
             InitializeComponent();
             this.Loaded += MainPage_Loaded;
+
+            this.setUpApplicationBar();
+        }
+
+        private void setUpApplicationBar()
+        {
+            ApplicationBar = new ApplicationBar();
+            ApplicationBar.Mode = ApplicationBarMode.Default;
+            ApplicationBar.Opacity = 1.0;
+            ApplicationBar.IsVisible = true;
+            var settingsButton = new ApplicationBarIconButton
+            {
+                IconUri = new Uri("/Images/appbar.feature.settings.rest.png", UriKind.Relative),
+                Text = "Settings"
+            };
+            settingsButton.Click += btnSettings_OnClick;
+            ApplicationBar.Buttons.Add(settingsButton);
+
+            
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -82,9 +109,33 @@ namespace VirtualReceptionist
                     ColleagueID = xColleague.Element("guid").Value,
                     FirstName = xColleague.Element("firstname").Value,
                     LastName = xColleague.Element("lastname").Value,
-                    Title = xColleague.Element("title").Value
+                    Title = xColleague.Element("title").Value,
+                    UserName = xColleague.Element("username").Value,
+                    CurrentLocation = xColleague.Element("currentlocation").Value,
+                    CurrentLocationId = xColleague.Element("currentlocationguid").Value
                 };
                 this.lstColleagues.Items.Add(colleague);
+
+                if (!string.IsNullOrEmpty(this.savedUserName.Value) && this.savedUserName.Value.ToLower() == xColleague.Element("username").Value)
+                {
+                    var clockedIn = (xColleague.Element("currentlocation").Value != "Out of the office");
+                    this.savedClockedIn.Value = clockedIn;
+                    /*
+                    if (clockedIn)
+                    {
+                        var checkOutButton = new ApplicationBarIconButton
+                        {
+                            IconUri = new Uri("/Images/appbar.checkout.rest.png", UriKind.Relative),
+                            Text = "Check Out"
+                        };
+                        checkOutButton.Click += btnCheckOut_OnClick;
+                        ApplicationBar.Buttons.Add(checkOutButton);
+                    }
+                     */
+                    this.savedUserDisplayName.Value = colleague.FirstName;
+                    this.savedUserLocation.Value = colleague.CurrentLocation;
+                    this.savedUserLocationId.Value = colleague.CurrentLocationId;
+                }
                 //colleagueStr += string.Format("{0} {1}\n", colleague.Element("firstname").Value, colleague.Element("lastname").Value);
             }
             txtColleaguesLoading.Visibility = Visibility.Collapsed;
@@ -107,7 +158,7 @@ namespace VirtualReceptionist
                 {
                     LocationID = xLocation.Element("guid").Value,
                     Name = xLocation.Element("name").Value,
-                    Address = xLocation.Element("Address").Value
+                    Address = xLocation.Element("address").Value
                 };
                 this.lstLocations.Items.Add(location);
                 //colleagueStr += string.Format("{0} {1}\n", colleague.Element("firstname").Value, colleague.Element("lastname").Value);
@@ -144,7 +195,7 @@ namespace VirtualReceptionist
         {
             if (this.lstColleagues.SelectedIndex != -1)
             {
-                this.NavigationService.Navigate(new Uri("/ColleagueDetails.xaml?colleagueId=" + this.lstColleagues.SelectedValue, UriKind.Relative));
+                this.NavigationService.Navigate(new Uri("/ColleagueDetails.xaml?userName=" + this.lstColleagues.SelectedValue, UriKind.Relative));
             }
             //this.lstColleagues.SelectedIndex = -1;
         }
@@ -162,11 +213,39 @@ namespace VirtualReceptionist
         {
             this.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
-
-        public void btnCheckIn_OnClick(object sender, EventArgs e)
+        /*
+        public void btnCheckOut_OnClick(object sender, EventArgs e)
         {
+            locationClient = new WebClient();
+            locationClient.OpenReadCompleted += OnCheckOutServiceOpenReadComplete;
+            var url = "http://locator.rgahosting.com/LocatorService.svc/employees/" + this.savedUserName.Value + "?location=bca88939-68dc-467d-a354-d733c9a5cce2&date=" + DateTime.Now.ToString();
+            locationClient.OpenReadAsync(new Uri(url));
+        }
+
+        private void OnCheckOutServiceOpenReadComplete(object sender, OpenReadCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                MessageBox.Show("There was a problem checking you out - please check your username in settings");
+            }
+            else
+            {
+                var reader = new StreamReader(e.Result);
+                var result = reader.ReadToEnd();
+                XmlReader XMLReader = XmlReader.Create(new MemoryStream(System.Text.UnicodeEncoding.Unicode.GetBytes(result)));
+                XDocument xml = XDocument.Load(XMLReader);
+
+                var success = Boolean.Parse(xml.Root.Value);
+                if (success)
+                {
+                    MessageBox.Show("You have been checked out.");
+                    this.setUpApplicationBar();
+                }
+            }
+
 
         }
+         */
 
     }
 }

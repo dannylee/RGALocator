@@ -25,9 +25,15 @@ namespace VirtualReceptionist.BusinessObjects
 
         public string CurrentLocation { get; set; }
 
+        public string CurrentLocationId { get; set; }
+
         public string PhotoURL { get; set; }
 
         public string ThumbnailURL { get; set; }
+
+        public string MobilePhone { get; set; }
+
+
 
         public Colleague()
         {

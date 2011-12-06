@@ -8,7 +8,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -32,7 +32,7 @@
             <controls:PivotItem x:Name="pvtColleagues" Header="colleagues"  Margin="0" Padding="0">
                 <StackPanel Orientation="Vertical">
                     <TextBlock x:Name="txtColleaguesLoading" Text="Loading colleagues..." Padding="10 10 0 0 " Grid.Row="1"/>
-                    <ListBox x:Name="lstColleagues" ItemsSource="{Binding}" SelectedValuePath="ColleagueID"
+                    <ListBox x:Name="lstColleagues" ItemsSource="{Binding}" SelectedValuePath="UserName"
                             SelectionChanged="lstColleagues_SelectionChanged" Padding="0 15 0 0"
                             Height="560">
                         <ListBox.ItemTemplate>
@@ -119,11 +119,6 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
 
-    <!--Sample code showing usage of ApplicationBar-->
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="Settings" x:Name="btnSettings" Click="btnSettings_OnClick"/>
 
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
+    
 </phone:PhoneApplicationPage>
