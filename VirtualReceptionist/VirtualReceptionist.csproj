@@ -116,8 +116,7 @@
     <None Include="output.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <Resource Include="ApplicationIcon.png" />
-    <Resource Include="Background.png" />
+    <Content Include="ApplicationIcon.png" />
     <Content Include="Images\appbar.check.rest.png" />
     <Content Include="Images\appbar.checkin.rest.png" />
     <Content Include="Images\appbar.checkout.rest.png" />
@@ -136,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dependancies\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

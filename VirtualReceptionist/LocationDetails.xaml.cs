@@ -77,7 +77,7 @@ namespace VirtualReceptionist
                     {
                         var checkOutButton = new ApplicationBarIconButton
                         {
-                            IconUri = new Uri("/Images/appbar.checkout.rest.png", UriKind.Relative),
+                            IconUri = new Uri("/Images/appbar.close.rest.png", UriKind.Relative),
                             Text = "Check Out"
                         };
                         checkOutButton.Click += btnCheckOut_OnClick;
@@ -87,7 +87,7 @@ namespace VirtualReceptionist
                     {
                         var checkInButton = new ApplicationBarIconButton
                         {
-                            IconUri = new Uri("/Images/appbar.checkin.rest.png", UriKind.Relative),
+                            IconUri = new Uri("/Images/appbar.check.rest.png", UriKind.Relative),
                             Text = "Check In"
                         };
                         checkInButton.Click += btnCheckIn_OnClick;
@@ -140,7 +140,8 @@ namespace VirtualReceptionist
                     ColleagueID = xColleague.Element("guid").Value,
                     FirstName = xColleague.Element("firstname").Value,
                     LastName = xColleague.Element("lastname").Value,
-                    Title = xColleague.Element("title").Value
+                    Title = xColleague.Element("title").Value,
+                    UserName = xColleague.Element("username").Value
                 };
                 this.lstColleagues.Items.Add(colleague);
                 locationName = xColleague.Element("currentlocation").Value;
@@ -154,7 +155,7 @@ namespace VirtualReceptionist
         {
             if (this.lstColleagues.SelectedIndex != -1)
             {
-                this.NavigationService.Navigate(new Uri("/ColleagueDetails.xaml?colleagueId=" + this.lstColleagues.SelectedValue + "&locationId=" + locationId + "&date=" + DateTime.Now.ToString(), UriKind.Relative));
+                this.NavigationService.Navigate(new Uri("/ColleagueDetails.xaml?userName=" + this.lstColleagues.SelectedValue + "&locationId=" + locationId + "&date=" + DateTime.Now.ToString(), UriKind.Relative));
             }
         }
         public void btnBack_OnClick(object sender, EventArgs e)

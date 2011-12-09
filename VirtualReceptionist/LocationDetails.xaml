@@ -22,13 +22,13 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock x:Name="ApplicationTitle" Text="LOCATION - R/GA VIRTUAL RECEPTIONIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="LOCATION - R/GA LOCATOR" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="location" Margin="18 10 0 15" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="1">
             <TextBlock x:Name="txtIntro" Text="Loading location..." Padding="10 10 0 0"/>
-            <ListBox x:Name="lstColleagues" ItemsSource="{Binding}" SelectedValuePath="ColleagueID"
+            <ListBox x:Name="lstColleagues" ItemsSource="{Binding}" SelectedValuePath="UserName"
                      SelectionChanged="lstColleagues_SelectionChanged" Padding="0 15 0 0"
                      Height="640">
                 <ListBox.ItemTemplate>

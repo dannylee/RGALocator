@@ -24,7 +24,7 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,0">
-            <TextBlock x:Name="ApplicationTitle" Text="HOME - R/GA VIRTUAL RECEPTIONIST" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="HOME - R/GA LOCATOR" Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
